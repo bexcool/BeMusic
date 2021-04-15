@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PublishUrlHistory>ftp://klokanek.endora.cz/bexcool.eu/web/downloads/bemusic/update/|publish\</PublishUrlHistory>
+    <InstallUrlHistory>http://bexcool.eu/downloads/bemusic/update/</InstallUrlHistory>
+    <SupportUrlHistory>https://bexcool.eu/</SupportUrlHistory>
+    <UpdateUrlHistory />
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory>https://bexcool.eu/</ErrorReportUrlHistory>
+    <FallbackCulture>cs-CZ</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableSecurityDebugging>false</EnableSecurityDebugging>
+  </PropertyGroup>
+</Project>

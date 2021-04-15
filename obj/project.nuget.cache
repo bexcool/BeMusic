@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "dgSpecHash": "KBlqv8msHGlPmhRga6gD1E+D4RlTrWiPXp3xMmdzoqgMUF5KBXb5r9Dm8xY12z0zjVhM2SvTCxwo/TnCd3s0Fg==",
+  "success": true,
+  "projectFilePath": "F:\\Windows Apps Projects\\BeMusic\\BeMusic.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Santa\\.nuget\\packages\\genius.net\\4.0.1\\genius.net.4.0.1.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\jil\\2.17.0\\jil.2.17.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\microsoft.owin\\4.1.1\\microsoft.owin.4.1.1.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\microsoft.owin.security\\4.1.1\\microsoft.owin.security.4.1.1.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\microsoft.owin.security.oauth\\4.1.1\\microsoft.owin.security.oauth.4.1.1.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\microsoft.windows.sdk.contracts\\10.0.18362.2005\\microsoft.windows.sdk.contracts.10.0.18362.2005.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\modernwpfui\\0.9.4\\modernwpfui.0.9.4.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\naudio\\2.0.0\\naudio.2.0.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\naudio.asio\\2.0.0\\naudio.asio.2.0.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\naudio.core\\2.0.0\\naudio.core.2.0.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\naudio.midi\\2.0.0\\naudio.midi.2.0.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\naudio.wasapi\\2.0.0\\naudio.wasapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\naudio.winforms\\2.0.0\\naudio.winforms.2.0.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\naudio.winmm\\2.0.0\\naudio.winmm.2.0.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\newtonsoft.json\\10.0.1\\newtonsoft.json.10.0.1.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\owin\\1.0.0\\owin.1.0.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\sigil\\4.7.0\\sigil.4.7.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.runtime.windowsruntime\\4.6.0\\system.runtime.windowsruntime.4.6.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.runtime.windowsruntime.ui.xaml\\4.6.0\\system.runtime.windowsruntime.ui.xaml.4.6.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

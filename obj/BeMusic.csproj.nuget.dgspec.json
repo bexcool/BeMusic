@@ -1,0 +1,73 @@
+{
+  "format": 1,
+  "restore": {
+    "F:\\Windows Apps Projects\\BeMusic\\BeMusic.csproj": {}
+  },
+  "projects": {
+    "F:\\Windows Apps Projects\\BeMusic\\BeMusic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "F:\\Windows Apps Projects\\BeMusic\\BeMusic.csproj",
+        "projectName": "BeMusic",
+        "projectPath": "F:\\Windows Apps Projects\\BeMusic\\BeMusic.csproj",
+        "packagesPath": "C:\\Users\\Santa\\.nuget\\packages\\",
+        "outputPath": "F:\\Windows Apps Projects\\BeMusic\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Santa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "Genius.NET": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            },
+            "Microsoft.Owin.Security.OAuth": {
+              "target": "Package",
+              "version": "[4.1.1, )"
+            },
+            "ModernWpfUI": {
+              "target": "Package",
+              "version": "[0.9.4, )"
+            },
+            "NAudio": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}
