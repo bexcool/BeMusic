@@ -31,10 +31,11 @@ namespace BeMusic
         private WaveOutEvent outputAudio;
         private AudioFileReader audioFile;
 
-        bool audioPlaying, timeSliderUserChanging = false, stopToChangeSound = false, repeatSong = false;
+        bool audioPlaying, timeSliderUserChanging = false, stopToChangeSound = false, repeatSong = false, soundNameAnimPlaying = false;
 
         DispatcherTimer timerUpdateCurrTime = new DispatcherTimer();
         DispatcherTimer timerCheckLastSounds = new DispatcherTimer();
+        DispatcherTimer timerCheckSoundName = new DispatcherTimer();
 
         List<string> soundFileURLs = new List<string>();
 
@@ -44,6 +45,7 @@ namespace BeMusic
 
         Storyboard windowMouseEnterLeaveStoryBoard = new Storyboard();
         Storyboard musicCircle = new Storyboard();
+        Storyboard soundName = new Storyboard();
 
         string currentPlaylist = "last_sounds.txt";
 
@@ -63,6 +65,8 @@ namespace BeMusic
             outputAudio = new WaveOutEvent();
             outputAudio.PlaybackStopped += outputAudio_PlaybackStopped;
 
+            soundName.Completed += MusicCircle_Completed;
+
             timerUpdateCurrTime.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timerUpdateCurrTime.Tick += TimerUpdateCurrTime_Elapsed;
             timerUpdateCurrTime.Start();
@@ -70,6 +74,10 @@ namespace BeMusic
             timerCheckLastSounds.Interval = new TimeSpan(0, 0, 1);
             timerCheckLastSounds.Tick += TimerCheckLastSounds_Elapsed;
             timerCheckLastSounds.Start();
+
+            timerCheckSoundName.Interval = new TimeSpan(0, 0, 5);
+            timerCheckSoundName.Tick += TimerCheckSoundName_Elapsed;
+            timerCheckSoundName.Start();
         }
 
         public class PlaylistItem
@@ -83,7 +91,6 @@ namespace BeMusic
 
         private async void setUpGenius()
         {
-            
 
             //var geniusClient = new GeniusClient("q02Ct9XQ3WArvsffhy_CAfTpwtNF1QaQaHkppYzzSHADM16aSV6f3R3iRT9Z8Slw");
 
@@ -248,6 +255,37 @@ namespace BeMusic
                 }
             }
             stopToChangeSound = false;
+        }
+
+        private void TimerCheckSoundName_Elapsed(object sender, EventArgs e)
+        {
+            if (SongNameLabel.ActualWidth + SongNameLabel.Margin.Left + 10 > BeMusicWindow.Width)
+            {
+                if (!soundNameAnimPlaying)
+                {
+                    DoubleAnimation soundNameA = new DoubleAnimation();
+
+                    soundNameA.From = 0;
+                    soundNameA.To = 360;
+                    soundName.RepeatBehavior = RepeatBehavior.Forever;
+                    soundNameA.Duration = new Duration(TimeSpan.FromSeconds(5));
+
+                    soundName.Children.Add(soundNameA);
+                    Storyboard.SetTarget(soundNameA, SongNameLabel);
+                    Storyboard.SetTargetProperty(soundNameA, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
+
+                    soundName.Begin();
+                    soundNameAnimPlaying = true;
+                }
+            }
+            else
+            {
+                if (soundNameAnimPlaying)
+                {
+                    soundName.Stop();
+                    soundNameAnimPlaying = false;
+                }
+            }
         }
 
         private void TimerUpdateCurrTime_Elapsed(object sender, EventArgs e)
@@ -758,6 +796,28 @@ namespace BeMusic
 
             windowMouseEnterLeaveStoryBoard.Children.Clear();
 
+            DoubleAnimation WMEL_BgImageBtnPosA = new DoubleAnimation();
+
+            WMEL_BgImageBtnPosA.From = BackgroundBorder.Opacity;
+            WMEL_BgImageBtnPosA.To = 0.7;
+            WMEL_BgImageBtnPosA.AccelerationRatio = 0.5;
+            WMEL_BgImageBtnPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_BgImageBtnPosA);
+            Storyboard.SetTarget(WMEL_BgImageBtnPosA, BackgroundBorder);
+            Storyboard.SetTargetProperty(WMEL_BgImageBtnPosA, new PropertyPath(Border.OpacityProperty));
+
+            DoubleAnimation WMEL_SettingsBtnPosA = new DoubleAnimation();
+
+            WMEL_SettingsBtnPosA.From = SettingsButton.Opacity;
+            WMEL_SettingsBtnPosA.To = 0.0;
+            WMEL_SettingsBtnPosA.AccelerationRatio = 0.5;
+            WMEL_SettingsBtnPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SettingsBtnPosA);
+            Storyboard.SetTarget(WMEL_SettingsBtnPosA, SettingsButton);
+            Storyboard.SetTargetProperty(WMEL_SettingsBtnPosA, new PropertyPath(Button.OpacityProperty));
+
             DoubleAnimation WMEL_ExpndBtnPosA = new DoubleAnimation();
 
             WMEL_ExpndBtnPosA.From = PinButton.Opacity;
@@ -821,6 +881,28 @@ namespace BeMusic
             AppContentScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
             windowMouseEnterLeaveStoryBoard.Children.Clear();
+
+            DoubleAnimation WMEL_BgImageBtnPosA = new DoubleAnimation();
+
+            WMEL_BgImageBtnPosA.From = BackgroundBorder.Opacity;
+            WMEL_BgImageBtnPosA.To = 0.3;
+            WMEL_BgImageBtnPosA.AccelerationRatio = 0.5;
+            WMEL_BgImageBtnPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_BgImageBtnPosA);
+            Storyboard.SetTarget(WMEL_BgImageBtnPosA, BackgroundBorder);
+            Storyboard.SetTargetProperty(WMEL_BgImageBtnPosA, new PropertyPath(Border.OpacityProperty));
+
+            DoubleAnimation WMEL_SettingsBtnPosA = new DoubleAnimation();
+
+            WMEL_SettingsBtnPosA.From = SettingsButton.Opacity;
+            WMEL_SettingsBtnPosA.To = 1.0;
+            WMEL_SettingsBtnPosA.AccelerationRatio = 0.5;
+            WMEL_SettingsBtnPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SettingsBtnPosA);
+            Storyboard.SetTarget(WMEL_SettingsBtnPosA, SettingsButton);
+            Storyboard.SetTargetProperty(WMEL_SettingsBtnPosA, new PropertyPath(Button.OpacityProperty));
 
             DoubleAnimation WMEL_ExpndBtnPosA = new DoubleAnimation();
 
@@ -939,11 +1021,7 @@ namespace BeMusic
         {
            if (currentSoundPlayingIndex == PlaylistListView.Items.IndexOf(PlaylistListView.SelectedItem))
             {
-                if (outputAudio.PlaybackState == PlaybackState.Paused || outputAudio.PlaybackState == PlaybackState.Playing)
-                {
-                    stopToChangeSound = true;
-                    outputAudio.Stop();
-                }
+                RewindNextButton_Click(new object(), new RoutedEventArgs());
             }
 
             List<string> lastSounds = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\last_sounds.txt").ToList();
@@ -959,8 +1037,20 @@ namespace BeMusic
 
         private void NewPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            //var createFile = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\last_sounds.txt");
-            //createFile.Close();
+            int index = 1;
+
+            for (int i = 0; i < Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\").Length; i++)
+            {
+                if (Path.GetFileName(Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\")[i]) == "NewPlaylist" + index + ".txt")
+                {
+                    index++;
+                }
+            }
+
+            var createFile = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\NewPlaylist" + index + ".txt");
+            createFile.Close();
+
+            PlaylistsTabControl.Items.Add("NewPlaylist" + index);
         }
 
         private void soundTime_Slider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -996,6 +1086,11 @@ namespace BeMusic
 
             musicCircle.Begin();
             musicCircle.Pause();
+        }
+
+        private void MusicCircle_Completed(object sender, EventArgs e)
+        {
+            
         }
 
         protected void PlaylistListView_DoubleClick(object sender, MouseButtonEventArgs e)

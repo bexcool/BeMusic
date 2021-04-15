@@ -88,6 +88,9 @@
                 <Button x:Name="PinButton" HorizontalAlignment="Left" Margin="35,5,0,0" VerticalAlignment="Top" Width="25" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="PinButton_Click">
                     <Image x:Name="PinImage" Source="Images/pin_border_96px.png"/>
                 </Button>
+                <Button x:Name="SettingsButton" HorizontalAlignment="Left" Margin="65,5,0,0" VerticalAlignment="Top" Width="25" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="ExpandShrinkButton_Click" Visibility="Hidden">
+                    <Image x:Name="SettingsImage" Source="Images/settings_144px.png"/>
+                </Button>
             </Grid>
             <Grid x:Name="LastOpenedSoundsGrid" Margin="0" Background="#FF0C0C0C">
                 <Label Content="My playlists" HorizontalAlignment="Left" Margin="20,15,0,0" VerticalAlignment="Top" FontSize="25"/>
@@ -104,7 +107,7 @@
                         </ListView.ContextMenu>
                     </ListView>
                 </StackPanel>
-                <Button x:Name="RepeatButton_Copy" Height="30" Margin="0,18,30,0" Foreground="{x:Null}" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}" Click="RepeatButton_Click" Padding="0" Width="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top">
+                <Button x:Name="NewPlaylistButton" Height="30" Margin="0,18,30,0" Foreground="{x:Null}" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Width="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Click="NewPlaylistButton_Click" Visibility="Hidden">
                     <Image x:Name="RepeatImage1" Source="Images/plus_144px.png" Margin="0" RenderTransformOrigin="0.5,0.5" Height="23" Width="23">
                         <Image.RenderTransform>
                             <TransformGroup>

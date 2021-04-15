@@ -35,8 +35,8 @@
     <SuiteName>BeMusic</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>13</ApplicationRevision>
-    <ApplicationVersion>1.1.1.13</ApplicationVersion>
+    <ApplicationRevision>15</ApplicationRevision>
+    <ApplicationVersion>1.1.3.15</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -187,6 +187,7 @@
     <Resource Include="Images\compress_96px.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\settings_144px.png" />
     <Resource Include="Images\plus_144px.png" />
     <Resource Include="Images\winter-mountain-snow-4k-01.jpg" />
     <Resource Include="Images\pin_96px.png" />
