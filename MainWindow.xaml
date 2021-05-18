@@ -12,8 +12,8 @@
         Foreground="{x:Null}" 
         ui:WindowHelper.UseModernWindowStyle="True"
         MouseDown="BeMusicWindow_MouseDown" Loaded="BeMusicWindow_Loaded" MinWidth="400" MinHeight="300" StateChanged="BeMusicWindow_StateChanged" KeyDown="BeMusicWindow_KeyDown" MouseLeave="BeMusicWindow_MouseLeave" MouseEnter="BeMusicWindow_MouseEnter" SizeChanged="BeMusicWindow_SizeChanged">
-    <ScrollViewer x:Name="AppContentScroll" Background="#FF1D1D1D" HorizontalContentAlignment="Stretch" local:CustomDesignAttributes.VerticalScrollTo="300">
-        <StackPanel>
+    <ScrollViewer x:Name="AppContentScroll" Background="#FF1D1D1D" HorizontalContentAlignment="Stretch" local:CustomDesignAttributes.VerticalScrollTo="0">
+        <StackPanel Background="#FF0C0C0C">
             <Grid x:Name="SongPlayerGrid" Height="319">
                 <Border x:Name="BackgroundBorder" Opacity="0.3">
                     <Border.OpacityMask>
@@ -23,8 +23,9 @@
                         </LinearGradientBrush>
                     </Border.OpacityMask>
                     <Border.Background>
-                        <ImageBrush ImageSource="Images/winter-mountain-snow-4k-01.jpg" Stretch="UniformToFill"/>
+                        <ImageBrush x:Name="BackgroundImage" ImageSource="Images/winter-mountain-snow-4k-01.jpg" Stretch="UniformToFill"/>
                     </Border.Background>
+                    <!--<MediaElement x:Name="video" Stretch="UniformToFill" Source="Waiting_02-2021_1080p.mp4" Volume="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
                 </Border>
                 <Border x:Name="SoundImageBorder" CornerRadius="60" Background="#FF131313" Margin="0,0,0,116" Width="120" Height="120" RenderTransformOrigin="0.5,0.5">
                     <Image Height="60" Margin="10" Width="60" Source="Images/music_144px.png"/>
@@ -38,7 +39,7 @@
                             <Image x:Name="PlayImage" Source="Images/icons8-play-96.png"/>
                         </Button>
                         <Slider x:Name="soundTime_Slider" Foreground="#FFCDCDCD" SmallChange="1" Margin="75,0" PreviewMouseUp="soundTime_Slider_PreviewMouseUp" PreviewMouseDown="soundTime_Slider_PreviewMouseDown" IsMoveToPointEnabled="False" Height="33" VerticalAlignment="Top"/>
-                        <Slider x:Name="soundVolume_Slider" Foreground="#FF747474" Margin="308,35,10,15" Maximum="2" SmallChange="0.001" LargeChange="0.001" Value="0.5" ValueChanged="soundVolume_Slider_ValueChanged" HorizontalAlignment="Center" Width="74"/>
+                        <Slider x:Name="soundVolume_Slider" Foreground="#FF747474" Margin="308,35,10,15" Maximum="2" SmallChange="0.001" LargeChange="0.001" Value="0.5" ValueChanged="soundVolume_Slider_ValueChanged" HorizontalAlignment="Center" Width="74" PreviewMouseUp="soundVolume_Slider_PreviewMouseUp"/>
                         <Label x:Name="currentTimeLabel" Content="00:00:00" VerticalAlignment="Top" Margin="10,7,0,0" HorizontalAlignment="Left" Width="52"/>
                         <Label x:Name="TotalTimeLabel" Content="00:00:00" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,7,10,0" Width="52"/>
                         <Button x:Name="RewindBackButton" Height="30" Margin="65,35,147,15" Foreground="{x:Null}" HorizontalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Click="RewindBackButton_Click" Width="35">
@@ -81,16 +82,43 @@
                         </LinearGradientBrush>
                     </Border.Background>
                 </Border>
-                <Label x:Name="SongNameLabel" Content="Song name" HorizontalAlignment="Left" Margin="10,0,0,93" FontWeight="Bold" FontFamily="Arial" FontSize="20" Height="23" VerticalAlignment="Bottom"/>
+                <Grid x:Name="SongNameGrid" Margin="0,0,0,83" Height="23" VerticalAlignment="Bottom">
+                    <Label x:Name="SongNameLabel" Content="Song name" Margin="10,0,0,0" FontWeight="Bold" FontFamily="Arial" FontSize="20" Height="23" HorizontalAlignment="Left">
+                        <Label.RenderTransform>
+                            <RotateTransform x:Name="noFreeze2" />
+                        </Label.RenderTransform>
+                    </Label>
+                </Grid>
                 <Button x:Name="ExpandShrinkButton" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Width="25" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="ExpandShrinkButton_Click">
                     <Image x:Name="ExpandShrinkImage" Source="Images/expand_96px.png"/>
                 </Button>
                 <Button x:Name="PinButton" HorizontalAlignment="Left" Margin="35,5,0,0" VerticalAlignment="Top" Width="25" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="PinButton_Click">
                     <Image x:Name="PinImage" Source="Images/pin_border_96px.png"/>
                 </Button>
-                <Button x:Name="SettingsButton" HorizontalAlignment="Left" Margin="65,5,0,0" VerticalAlignment="Top" Width="25" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="ExpandShrinkButton_Click" Visibility="Hidden">
+                <Button x:Name="SettingsButton" HorizontalAlignment="Left" Margin="95,5,0,0" VerticalAlignment="Top" Width="25" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="SettingsButton_Click" Visibility="Visible">
                     <Image x:Name="SettingsImage" Source="Images/settings_144px.png"/>
                 </Button>
+                <Button x:Name="OpenSongButton" Height="25" Margin="65,5,0,0" Foreground="{x:Null}" HorizontalAlignment="Left" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Width="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Click="OpenSongButton_Click">
+                    <Image x:Name="OpenFileImage" Source="Images/opened_folder_96px.png"/>
+                </Button>
+                <Label x:Name="SongAlbumNameLabel" Content="Song album" HorizontalAlignment="Left" Margin="10,0,0,106" FontFamily="Arial" FontSize="12" VerticalAlignment="Bottom" Foreground="#FFCBCBCB">
+                    <Label.RenderTransform>
+                        <RotateTransform x:Name="noFreeze1" />
+                    </Label.RenderTransform>
+                </Label>
+            </Grid>
+            <Grid Background="#FF0C0C0C" Margin="0,0,0,15" Visibility="Collapsed">
+                <Border CornerRadius="15" VerticalAlignment="Center" Margin="40,25,40,0" Height="200">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF040404" Offset="1"/>
+                            <GradientStop Color="#FF1D1D1D"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <Label Content="LYRICS FROM GENIUS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Foreground="#FFE0E0E0"/>
+                    </Grid>
+                </Border>
             </Grid>
             <Grid x:Name="LastOpenedSoundsGrid" Margin="0" Background="#FF0C0C0C">
                 <Label Content="My playlists" HorizontalAlignment="Left" Margin="20,15,0,0" VerticalAlignment="Top" FontSize="25"/>

@@ -20,6 +20,11 @@ using Genius;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Microsoft.Owin.Security.OAuth;
+using System.Drawing;
+using System.Drawing.Imaging;
+using YoutubeExplode;
+using Microsoft.Win32;
+using BeMusic;
 
 namespace BeMusic
 {
@@ -31,7 +36,7 @@ namespace BeMusic
         private WaveOutEvent outputAudio;
         private AudioFileReader audioFile;
 
-        bool audioPlaying, timeSliderUserChanging = false, stopToChangeSound = false, repeatSong = false, soundNameAnimPlaying = false;
+        bool audioPlaying, timeSliderUserChanging = false, stopToChangeSound = false, repeatSong = false, soundNameAnimPlaying = false, canCheckSettings = false;
 
         DispatcherTimer timerUpdateCurrTime = new DispatcherTimer();
         DispatcherTimer timerCheckLastSounds = new DispatcherTimer();
@@ -49,6 +54,10 @@ namespace BeMusic
 
         string currentPlaylist = "last_sounds.txt";
 
+        YoutubeClient YouTubePlayer = new YoutubeClient();
+
+        OpenFileDialog soundFileDialog = new OpenFileDialog();
+
         //GeniusClient geniusClient;
 
         public MainWindow()
@@ -58,6 +67,7 @@ namespace BeMusic
             InitializeComponent();
             setUpAnimations();
             setUpGenius();
+            loadSettings();
 
             RepeatImage.Opacity = 0.3;
             lastVolume = (float)soundVolume_Slider.Value;
@@ -75,9 +85,54 @@ namespace BeMusic
             timerCheckLastSounds.Tick += TimerCheckLastSounds_Elapsed;
             timerCheckLastSounds.Start();
 
-            timerCheckSoundName.Interval = new TimeSpan(0, 0, 5);
+            timerCheckSoundName.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timerCheckSoundName.Tick += TimerCheckSoundName_Elapsed;
             timerCheckSoundName.Start();
+
+            soundFileDialog.Filter = "Sound file (*.mp3;*.wav) | *.mp3;*.wav";
+            soundFileDialog.FileOk += SoundFileDialog_FileOk;
+        }
+
+        private void loadSettings()
+        {
+            List<string> settingsData = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt").ToList();
+
+            // 0 Volume
+
+            if (audioFile == null) soundVolume_Slider.Value = double.Parse(settingsData.ToArray()[0].Replace('.', ','));
+
+            if (soundVolume_Slider.Value > 1.5)
+            {
+                SoundImage.Source = new BitmapImage(new Uri(@"/Images/full_volume_96px.png", UriKind.Relative));
+            }
+            else if (soundVolume_Slider.Value > 0.75)
+            {
+                SoundImage.Source = new BitmapImage(new Uri(@"/Images/medium_volume_96px.png", UriKind.Relative));
+            }
+            else if (soundVolume_Slider.Value > 0)
+            {
+                SoundImage.Source = new BitmapImage(new Uri(@"/Images/low_volume_96px.png", UriKind.Relative));
+            }
+            else if (soundVolume_Slider.Value == 0)
+            {
+                SoundImage.Source = new BitmapImage(new Uri(@"/Images/mute_volume_96px.png", UriKind.Relative));
+            }
+
+            // 1 Background image
+            // Try if index exists
+
+            try
+            {
+                BackgroundImage.ImageSource = new BitmapImage(new Uri(settingsData.ToArray()[1]));
+            }
+            catch
+            {
+                settingsData.Add("pack://application:,,,/BeMusic;component/Images/winter-mountain-snow-4k-01.jpg");
+
+                File.WriteAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt", settingsData);
+            }
+
+            canCheckSettings = true;
         }
 
         public class PlaylistItem
@@ -100,12 +155,32 @@ namespace BeMusic
         public void checkApplicationFiles()
         {
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic")) Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic");
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config")) Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config");
 
             if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\last_sounds.txt"))
             {
                 var createFile = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\last_sounds.txt");
                 createFile.Close();
             }
+
+            if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt"))
+            {
+                var createdFile = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt");
+                createdFile.Close();
+
+                
+                // 0 Volume
+                // 1 Background picture
+
+                List<string> settingsData = new List<string>();
+
+                settingsData.Add("0.5");
+                settingsData.Add("pack://application:,,,/BeMusic;component/Images/winter-mountain-snow-4k-01.jpg");
+
+                File.WriteAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt", settingsData);
+            }
+
+            if (canCheckSettings) loadSettings();
         }
 
         private void alreadyStarted()
@@ -174,14 +249,16 @@ namespace BeMusic
                         {
                             if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                             {
-                                SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
-                                audioFile = new AudioFileReader(filePath);
-
+                                getSongData();
+                                
                                 if (outputAudio.PlaybackState == PlaybackState.Paused || outputAudio.PlaybackState == PlaybackState.Playing)
                                 {
                                     stopToChangeSound = true;
                                     outputAudio.Stop();
                                 }
+                                if (audioFile != null) audioFile.Close();
+
+                                audioFile = new AudioFileReader(filePath);
 
                                 outputAudio.Init(audioFile);
 
@@ -227,7 +304,8 @@ namespace BeMusic
                     {
                         if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                         {
-                            SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
+                            if (audioFile != null) audioFile.Close();
+                            getSongData();
                             audioFile = new AudioFileReader(filePath);
 
                             if (outputAudio.PlaybackState == PlaybackState.Paused || outputAudio.PlaybackState == PlaybackState.Playing)
@@ -259,20 +337,22 @@ namespace BeMusic
 
         private void TimerCheckSoundName_Elapsed(object sender, EventArgs e)
         {
-            if (SongNameLabel.ActualWidth + SongNameLabel.Margin.Left + 10 > BeMusicWindow.Width)
+            if (SongNameLabel.ActualWidth + SongNameLabel.Margin.Left + 10 > SongNameGrid.ActualWidth)
             {
                 if (!soundNameAnimPlaying)
                 {
-                    DoubleAnimation soundNameA = new DoubleAnimation();
+                    soundName.Children.Clear();
 
-                    soundNameA.From = 0;
-                    soundNameA.To = 360;
+                    ThicknessAnimationUsingKeyFrames soundNameA = new ThicknessAnimationUsingKeyFrames();
+
+                    soundNameA.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(10, SongNameLabel.Margin.Top, SongNameLabel.Margin.Right, SongNameLabel.Margin.Bottom), KeyTime.FromTimeSpan(TimeSpan.FromSeconds(0))));
+                    soundNameA.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(10, SongNameLabel.Margin.Top, SongNameLabel.Margin.Right, SongNameLabel.Margin.Bottom), KeyTime.FromTimeSpan(TimeSpan.FromSeconds(1))));
+                    soundNameA.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(-1 * SongNameLabel.ActualWidth - 100, SongNameLabel.Margin.Top, SongNameLabel.Margin.Right, SongNameLabel.Margin.Bottom), KeyTime.FromTimeSpan(TimeSpan.FromSeconds(9))));
                     soundName.RepeatBehavior = RepeatBehavior.Forever;
-                    soundNameA.Duration = new Duration(TimeSpan.FromSeconds(5));
 
                     soundName.Children.Add(soundNameA);
                     Storyboard.SetTarget(soundNameA, SongNameLabel);
-                    Storyboard.SetTargetProperty(soundNameA, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
+                    Storyboard.SetTargetProperty(soundNameA, new PropertyPath(Label.MarginProperty));
 
                     soundName.Begin();
                     soundNameAnimPlaying = true;
@@ -282,8 +362,9 @@ namespace BeMusic
             {
                 if (soundNameAnimPlaying)
                 {
-                    soundName.Stop();
-                    soundNameAnimPlaying = false;
+                    soundName.Pause();
+                    var t2 = new Timer { Enabled = true, Interval = 1000 };
+                    t2.Elapsed += (o, a) => { soundNameAnimPlaying = false; soundName.Stop(); t2.Stop(); };
                 }
             }
         }
@@ -367,7 +448,8 @@ namespace BeMusic
                         {
                             if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                             {
-                                SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
+                                if (audioFile != null) audioFile.Close();
+                                getSongData();
                                 audioFile = new AudioFileReader(filePath);
 
                                 outputAudio.Init(audioFile);
@@ -425,7 +507,8 @@ namespace BeMusic
                         {
                             if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                             {
-                                SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
+                                if (audioFile != null) audioFile.Close();
+                                getSongData();
                                 audioFile = new AudioFileReader(filePath);
 
                                 outputAudio.Init(audioFile);
@@ -479,7 +562,8 @@ namespace BeMusic
                     {
                         if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                         {
-                            SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
+                            if (audioFile != null) audioFile.Close();
+                            getSongData();
                             audioFile = new AudioFileReader(filePath);
 
                             outputAudio.Init(audioFile);
@@ -523,7 +607,8 @@ namespace BeMusic
                     {
                         if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                         {
-                            SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
+                            if (audioFile != null) audioFile.Close();
+                            getSongData();
                             audioFile = new AudioFileReader(filePath);
 
                             outputAudio.Init(audioFile);
@@ -556,14 +641,17 @@ namespace BeMusic
                         {
                             if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                             {
-                                SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
-                                audioFile = new AudioFileReader(filePath);
-
+                                getSongData();
+                                
                                 if (outputAudio.PlaybackState == PlaybackState.Paused || outputAudio.PlaybackState == PlaybackState.Playing)
                                 {
                                     stopToChangeSound = true;
                                     outputAudio.Stop();
                                 }
+                                if (audioFile != null) audioFile.Close();
+
+                                audioFile = new AudioFileReader(filePath);
+
                                 outputAudio.Init(audioFile);
 
                                 soundTime_Slider.Maximum = audioFile.TotalTime.TotalSeconds;
@@ -608,8 +696,10 @@ namespace BeMusic
                         {
                             if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                             {
-                                SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
+                                getSongData();
                                 audioFile = new AudioFileReader(filePath);
+
+                                if (audioFile != null) audioFile.Close();
 
                                 outputAudio.Init(audioFile);
 
@@ -644,14 +734,17 @@ namespace BeMusic
                     {
                         if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                         {
-                            SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
-                            audioFile = new AudioFileReader(filePath);
-
+                            getSongData();
+                            
                             if (outputAudio.PlaybackState == PlaybackState.Paused || outputAudio.PlaybackState == PlaybackState.Playing)
                             {
                                 stopToChangeSound = true;
                                 outputAudio.Stop();
                             }
+                            if (audioFile != null) audioFile.Close();
+
+                            audioFile = new AudioFileReader(filePath);
+
                             outputAudio.Init(audioFile);
 
                             soundTime_Slider.Maximum = audioFile.TotalTime.TotalSeconds;
@@ -693,7 +786,8 @@ namespace BeMusic
                     {
                         if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                         {
-                            SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
+                            if (audioFile != null) audioFile.Close();
+                            getSongData();
                             audioFile = new AudioFileReader(filePath);
 
                             outputAudio.Init(audioFile);
@@ -760,6 +854,14 @@ namespace BeMusic
                 audioFile.Volume = lastVolume;
                 soundVolume_Slider.Value = lastVolume;
             }
+
+            List<string> settingsData = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt").ToList();
+
+            // 0 Volume
+
+            settingsData[0] = soundVolume_Slider.Value.ToString();
+
+            File.WriteAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt", settingsData);
         }
 
         private void RepeatButton_Click(object sender, RoutedEventArgs e)
@@ -796,6 +898,17 @@ namespace BeMusic
 
             windowMouseEnterLeaveStoryBoard.Children.Clear();
 
+            ThicknessAnimation WMEL_SongAlbumNamePosA = new ThicknessAnimation();
+
+            WMEL_SongAlbumNamePosA.From = new Thickness(SongAlbumNameLabel.Margin.Left, SongAlbumNameLabel.Margin.Top, SongAlbumNameLabel.Margin.Right, SongAlbumNameLabel.Margin.Bottom);
+            WMEL_SongAlbumNamePosA.To = new Thickness(SongAlbumNameLabel.Margin.Left, SongAlbumNameLabel.Margin.Top, SongAlbumNameLabel.Margin.Right, 61);
+            WMEL_SongAlbumNamePosA.AccelerationRatio = 0.5;
+            WMEL_SongAlbumNamePosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SongAlbumNamePosA);
+            Storyboard.SetTarget(WMEL_SongAlbumNamePosA, SongAlbumNameLabel);
+            Storyboard.SetTargetProperty(WMEL_SongAlbumNamePosA, new PropertyPath(Label.MarginProperty));
+
             DoubleAnimation WMEL_BgImageBtnPosA = new DoubleAnimation();
 
             WMEL_BgImageBtnPosA.From = BackgroundBorder.Opacity;
@@ -820,7 +933,7 @@ namespace BeMusic
 
             DoubleAnimation WMEL_ExpndBtnPosA = new DoubleAnimation();
 
-            WMEL_ExpndBtnPosA.From = PinButton.Opacity;
+            WMEL_ExpndBtnPosA.From = ExpandShrinkButton.Opacity;
             WMEL_ExpndBtnPosA.To = 0.0;
             WMEL_ExpndBtnPosA.AccelerationRatio = 0.5;
             WMEL_ExpndBtnPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
@@ -828,6 +941,17 @@ namespace BeMusic
             windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_ExpndBtnPosA);
             Storyboard.SetTarget(WMEL_ExpndBtnPosA, ExpandShrinkButton);
             Storyboard.SetTargetProperty(WMEL_ExpndBtnPosA, new PropertyPath(Button.OpacityProperty));
+
+            DoubleAnimation WMEL_OpenBtnPosA = new DoubleAnimation();
+
+            WMEL_OpenBtnPosA.From = OpenSongButton.Opacity;
+            WMEL_OpenBtnPosA.To = 0.0;
+            WMEL_OpenBtnPosA.AccelerationRatio = 0.5;
+            WMEL_OpenBtnPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_OpenBtnPosA);
+            Storyboard.SetTarget(WMEL_OpenBtnPosA, OpenSongButton);
+            Storyboard.SetTargetProperty(WMEL_OpenBtnPosA, new PropertyPath(Button.OpacityProperty));
 
             DoubleAnimation WMEL_PinBtnPosA = new DoubleAnimation();
 
@@ -840,16 +964,16 @@ namespace BeMusic
             Storyboard.SetTarget(WMEL_PinBtnPosA, PinButton);
             Storyboard.SetTargetProperty(WMEL_PinBtnPosA, new PropertyPath(Button.OpacityProperty));
 
-            ThicknessAnimation WMEL_SongNamePosA = new ThicknessAnimation();
+            ThicknessAnimation WMEL_SongNameGridPosA = new ThicknessAnimation();
 
-            WMEL_SongNamePosA.From = new Thickness(SongNameLabel.Margin.Left, SongNameLabel.Margin.Top, SongNameLabel.Margin.Right, SongNameLabel.Margin.Bottom);
-            WMEL_SongNamePosA.To = new Thickness(10, 0, 0, 48);
-            WMEL_SongNamePosA.AccelerationRatio = 0.5;
-            WMEL_SongNamePosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+            WMEL_SongNameGridPosA.From = new Thickness(SongNameGrid.Margin.Left, SongNameGrid.Margin.Top, SongNameGrid.Margin.Right, SongNameGrid.Margin.Bottom);
+            WMEL_SongNameGridPosA.To = new Thickness(SongNameGrid.Margin.Left, SongNameGrid.Margin.Top, SongNameGrid.Margin.Right, 38);
+            WMEL_SongNameGridPosA.AccelerationRatio = 0.5;
+            WMEL_SongNameGridPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
 
-            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SongNamePosA);
-            Storyboard.SetTarget(WMEL_SongNamePosA, SongNameLabel);
-            Storyboard.SetTargetProperty(WMEL_SongNamePosA, new PropertyPath(Label.MarginProperty));
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SongNameGridPosA);
+            Storyboard.SetTarget(WMEL_SongNameGridPosA, SongNameGrid);
+            Storyboard.SetTargetProperty(WMEL_SongNameGridPosA, new PropertyPath(Grid.MarginProperty));
 
             ThicknessAnimation WMEL_BorGradPosA = new ThicknessAnimation();
 
@@ -882,6 +1006,17 @@ namespace BeMusic
 
             windowMouseEnterLeaveStoryBoard.Children.Clear();
 
+            ThicknessAnimation WMEL_SongAlbumNamePosA = new ThicknessAnimation();
+
+            WMEL_SongAlbumNamePosA.From = new Thickness(SongAlbumNameLabel.Margin.Left, SongAlbumNameLabel.Margin.Top, SongAlbumNameLabel.Margin.Right, SongAlbumNameLabel.Margin.Bottom);
+            WMEL_SongAlbumNamePosA.To = new Thickness(SongAlbumNameLabel.Margin.Left, SongAlbumNameLabel.Margin.Top, SongAlbumNameLabel.Margin.Right, 106);
+            WMEL_SongAlbumNamePosA.AccelerationRatio = 0.5;
+            WMEL_SongAlbumNamePosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SongAlbumNamePosA);
+            Storyboard.SetTarget(WMEL_SongAlbumNamePosA, SongAlbumNameLabel);
+            Storyboard.SetTargetProperty(WMEL_SongAlbumNamePosA, new PropertyPath(Label.MarginProperty));
+
             DoubleAnimation WMEL_BgImageBtnPosA = new DoubleAnimation();
 
             WMEL_BgImageBtnPosA.From = BackgroundBorder.Opacity;
@@ -903,6 +1038,17 @@ namespace BeMusic
             windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SettingsBtnPosA);
             Storyboard.SetTarget(WMEL_SettingsBtnPosA, SettingsButton);
             Storyboard.SetTargetProperty(WMEL_SettingsBtnPosA, new PropertyPath(Button.OpacityProperty));
+
+            DoubleAnimation WMEL_OpenBtnPosA = new DoubleAnimation();
+
+            WMEL_OpenBtnPosA.From = OpenSongButton.Opacity;
+            WMEL_OpenBtnPosA.To = 1.0;
+            WMEL_OpenBtnPosA.AccelerationRatio = 0.5;
+            WMEL_OpenBtnPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_OpenBtnPosA);
+            Storyboard.SetTarget(WMEL_OpenBtnPosA, OpenSongButton);
+            Storyboard.SetTargetProperty(WMEL_OpenBtnPosA, new PropertyPath(Button.OpacityProperty));
 
             DoubleAnimation WMEL_ExpndBtnPosA = new DoubleAnimation();
 
@@ -926,16 +1072,16 @@ namespace BeMusic
             Storyboard.SetTarget(WMEL_PinBtnPosA, PinButton);
             Storyboard.SetTargetProperty(WMEL_PinBtnPosA, new PropertyPath(Button.OpacityProperty));
 
-            ThicknessAnimation WMEL_SongNamePosA = new ThicknessAnimation();
+            ThicknessAnimation WMEL_SongNameGridPosA = new ThicknessAnimation();
 
-            WMEL_SongNamePosA.From = new Thickness(SongNameLabel.Margin.Left, SongNameLabel.Margin.Top, SongNameLabel.Margin.Right, SongNameLabel.Margin.Bottom);
-            WMEL_SongNamePosA.To = new Thickness(10, 0, 0, 93);
-            WMEL_SongNamePosA.AccelerationRatio = 0.5;
-            WMEL_SongNamePosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+            WMEL_SongNameGridPosA.From = new Thickness(SongNameGrid.Margin.Left, SongNameGrid.Margin.Top, SongNameGrid.Margin.Right, SongNameGrid.Margin.Bottom);
+            WMEL_SongNameGridPosA.To = new Thickness(SongNameGrid.Margin.Left, SongNameGrid.Margin.Top, SongNameGrid.Margin.Right, 83);
+            WMEL_SongNameGridPosA.AccelerationRatio = 0.5;
+            WMEL_SongNameGridPosA.Duration = new Duration(TimeSpan.FromSeconds(0.2));
 
-            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SongNamePosA);
-            Storyboard.SetTarget(WMEL_SongNamePosA, SongNameLabel);
-            Storyboard.SetTargetProperty(WMEL_SongNamePosA, new PropertyPath(Label.MarginProperty));
+            windowMouseEnterLeaveStoryBoard.Children.Add(WMEL_SongNameGridPosA);
+            Storyboard.SetTarget(WMEL_SongNameGridPosA, SongNameGrid);
+            Storyboard.SetTargetProperty(WMEL_SongNameGridPosA, new PropertyPath(Grid.MarginProperty));
 
             ThicknessAnimation WMEL_BorGradPosA = new ThicknessAnimation();
 
@@ -1053,6 +1199,13 @@ namespace BeMusic
             PlaylistsTabControl.Items.Add("NewPlaylist" + index);
         }
 
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow seettingsWindow = new SettingsWindow();
+
+            seettingsWindow.ShowDialog();
+        }
+
         private void soundTime_Slider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (audioFile != null)
@@ -1069,6 +1222,44 @@ namespace BeMusic
             }
 
             timeSliderUserChanging = false;
+        }
+
+        private void OpenSongButton_Click(object sender, RoutedEventArgs e)
+        {
+            soundFileDialog.ShowDialog();
+        }
+
+        private void SoundFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\last_sounds.txt"))
+            {
+                List<string> currentSoundFileURLs = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\last_sounds.txt").ToList();
+
+                if (currentSoundFileURLs.Contains(soundFileDialog.FileName))
+                {
+                    currentSoundFileURLs.Remove(soundFileDialog.FileName);
+                    currentSoundFileURLs.Add(soundFileDialog.FileName);
+                }
+                else
+                {
+                    currentSoundFileURLs.Add(soundFileDialog.FileName);
+                }
+
+                File.WriteAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\last_sounds.txt", currentSoundFileURLs.ToArray());
+
+                TimerCheckLastSounds_Elapsed(sender, new EventArgs());
+            }
+        }
+
+        private void soundVolume_Slider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            List<string> settingsData = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt").ToList();
+
+            // 0 Volume
+
+            settingsData[0] = soundVolume_Slider.Value.ToString();
+
+            File.WriteAllLines(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\BeMusic\config\settings.txt", settingsData);
         }
 
         public void setUpAnimations()
@@ -1105,15 +1296,17 @@ namespace BeMusic
                 {
                     if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                     {
-                        SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
-                        audioFile = new AudioFileReader(filePath);
-
+                        getSongData();
+                        
                         if (outputAudio.PlaybackState == PlaybackState.Paused || outputAudio.PlaybackState == PlaybackState.Playing)
                         {
                             stopToChangeSound = true;
                             outputAudio.Stop();
                         }
 
+                        if (audioFile != null) audioFile.Close();
+
+                        audioFile = new AudioFileReader(filePath);
                         outputAudio.Init(audioFile);
 
                         soundTime_Slider.Maximum = audioFile.TotalTime.TotalSeconds;
@@ -1128,8 +1321,10 @@ namespace BeMusic
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+
                 string errorFile = soundFileURLs[currentSoundPlayingIndex];
 
                 if (outputAudio.PlaybackState == PlaybackState.Paused || outputAudio.PlaybackState == PlaybackState.Playing)
@@ -1158,7 +1353,8 @@ namespace BeMusic
                 {
                     if (Path.GetExtension(filePath) == ".mp3" || Path.GetExtension(filePath) == ".wav")
                     {
-                        SongNameLabel.Content = Path.GetFileNameWithoutExtension(filePath);
+                        if (audioFile != null) audioFile.Close();
+                        getSongData();
                         audioFile = new AudioFileReader(filePath);
 
                         outputAudio.Init(audioFile);
@@ -1171,6 +1367,80 @@ namespace BeMusic
 
                 MessageBox.Show("Error occured while playing file \"" + Path.GetFileNameWithoutExtension(errorFile) + "\"", "File error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        public void getSongData()
+        {
+            try
+            {
+                byte[] b = new byte[128];
+
+                FileStream fs = new FileStream(soundFileURLs[currentSoundPlayingIndex], FileMode.Open);
+                fs.Seek(-128, SeekOrigin.End);
+                fs.Read(b, 0, 128);
+                String sFlag = Encoding.Default.GetString(b, 0, 3);
+                fs.Close();
+
+                SongNameLabel.Content = Path.GetFileNameWithoutExtension(soundFileURLs[currentSoundPlayingIndex]);
+                SongAlbumNameLabel.Content = "";
+
+                if (sFlag.CompareTo("TAG") == 0)
+                {
+                    // Singer - title
+                    if (Encoding.Default.GetString(b, 33, 30) != String.Empty && Encoding.Default.GetString(b, 3, 30) != String.Empty && !Encoding.Default.GetString(b, 33, 30).Contains("\0") && !Encoding.Default.GetString(b, 3, 30).Contains("\0")) SongNameLabel.Content = Encoding.Default.GetString(b, 33, 30) + " - " + Encoding.Default.GetString(b, 3, 30);
+                    // Album
+                    SongAlbumNameLabel.Content = Encoding.Default.GetString(b, 63, 30);
+
+                    // Year of publish
+                    //sYear = Encoding.Default.GetString(b, 93, 4);
+                    // Comment
+                    //sComm = Encoding.Default.GetString(b, 97, 30);
+                }
+            }
+            catch
+            {
+
+            }
+
+            /*
+            try
+            {
+                TagLib.File file = TagLib.File.Create(soundFileURLs[currentSoundPlayingIndex]);
+                var mStream = new MemoryStream();
+                var firstPicture = file.Tag.Pictures.FirstOrDefault();
+                if (firstPicture != null)
+                {
+                    byte[] pData = firstPicture.Data.Data;
+                    mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+                    BitmapImage bmi = new BitmapImage();
+                    bmi.StreamSource = mStream;
+                    mStream.Dispose();
+                    BackgroundImage.ImageSource = bmi; 
+                }
+                else
+                {
+                    // set "no cover" image
+                }
+
+                
+                TagLib.File tagLibFile = new TagLib.Mpeg.AudioFile(soundFileURLs[currentSoundPlayingIndex]);
+
+                MemoryStream ms = new MemoryStream(tagLibFile.Tag.Pictures[0].Data.Data);
+
+                BitmapImage albumBitmap = new BitmapImage();
+                albumBitmap.BeginInit();
+                albumBitmap.StreamSource = ms;
+                albumBitmap.EndInit();
+
+                ms.Close();
+
+                BackgroundImage.ImageSource = albumBitmap;
+            }
+            catch
+            {
+
+            }
+            */
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="BeMusic.exe" version="1.1.3.15" publicKeyToken="8d7d171004d92ac7" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="BeMusic.exe" version="1.3.4.26" publicKeyToken="8d7d171004d92ac7" language="neutral" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="Images\icons8_music.ico" asmv2:publisher="BeXCool" co.v1:suiteName="BeMusic" asmv2:product="BeMusic" asmv2:supportUrl="https://bexcool.eu/" co.v1:errorReportUrl="https://bexcool.eu/" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="BeMusic" version="1.1.3.15" publicKeyToken="8D7D171004D92AC7" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="BeMusic" version="1.3.4.26" language="neutral" processorArchitecture="msil" />
     <commandLine file="BeMusic.exe" parameters="" />
   </entryPoint>
   <co.v1:useManifestForTrust xmlns="urn:schemas-microsoft-com:asm.v1" />
@@ -16,16 +16,16 @@
       </applicationRequestMinimum>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
         <!--
-          Možnosti manifestu UAC
-          Chcete-li změnit úroveň řízení uživatelských účtů v systému Windows, nahraďte 
-          uzel requestedExecutionLevel jedním z následujících.
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the
+          requestedExecutionLevel node with one of the following.
 
         <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
         <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
         <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
 
-         Chcete-li využít virtualizaci souborů a registru pro zpětnou 
-         kompatibilitu, odstraňte uzel requestedExecutionLevel.
+         If you want to utilize File and Registry Virtualization for backward
+         compatibility then delete the requestedExecutionLevel node.
     -->
         <requestedExecutionLevel level="asInvoker" uiAccess="false" />
       </requestedPrivileges>
@@ -44,14 +44,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BeMusic.exe" size="1391552">
-      <assemblyIdentity name="BeMusic" version="1.1.3.15" publicKeyToken="8D7D171004D92AC7" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AngleSharp.dll" size="829440">
+      <assemblyIdentity name="AngleSharp" version="0.14.0.0" publicKeyToken="E83494DCDC6D31EA" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>zl/oPFeAw15Cp4UL1LRIKZWp21CFDt0UOkTD9JNhtso=</dsig:DigestValue>
+        <dsig:DigestValue>2WCfMg4FThfCuhEprSkygbczYlQlAoWHtzJlULyjmKA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BeMusic.exe" size="1402816">
+      <assemblyIdentity name="BeMusic" version="1.3.4.26" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>iw+sHl+V9pSLuWmt0gHDJ6HQMMXCiTK+/1tSHSak7No=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -76,6 +88,18 @@
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
         <dsig:DigestValue>lrYTVm7D3ayEGtC4RC4042d0DT0LsXT/OvSMAZYoJtE=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Bcl.AsyncInterfaces.dll" size="20856">
+      <assemblyIdentity name="Microsoft.Bcl.AsyncInterfaces" version="1.0.0.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>kxFj5XoVHOMlLHJrtf6/10GZnu1NBBOB8UZnISvrgRY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1880,6 +1904,54 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Buffers.dll" size="20856">
+      <assemblyIdentity name="System.Buffers" version="4.0.3.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>rMzPvkXZ8I/+7ZkW43sz6YxlvgEs//bn+ntnIQzh/vs=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Memory.dll" size="141184">
+      <assemblyIdentity name="System.Memory" version="4.0.1.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>jnYxjosGaSq/fasRadJ9FVV/fwo002r2Rj7/D+ISE8c=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Numerics.Vectors.dll" size="115856">
+      <assemblyIdentity name="System.Numerics.Vectors" version="4.1.4.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>HT74aYKB589zcdFVSv71hys5+Wwm2nciEKM9oEG6EYM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Runtime.CompilerServices.Unsafe.dll" size="17000">
+      <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" version="4.0.6.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>9u+WbQGbHEBmWc4Y86sAw8fJM05NrcAkm8ZyHNt37po=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Security.AccessControl.dll" size="30792">
       <assemblyIdentity name="System.Security.AccessControl" version="4.1.3.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -1904,6 +1976,54 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Text.Encoding.CodePages.dll" size="761488">
+      <assemblyIdentity name="System.Text.Encoding.CodePages" version="4.1.1.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>p1DdD1gyeslEh8kkdeq7mUh6RkByVuL6hZOFK07rzvg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Text.Encodings.Web.dll" size="57208">
+      <assemblyIdentity name="System.Text.Encodings.Web" version="4.0.5.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>E0mr4uYJfuqbMogb0SktRSKYhOqYx7K033Z0VK33iJk=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Text.Json.dll" size="293248">
+      <assemblyIdentity name="System.Text.Json" version="4.0.1.2" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>0mCCVAQ+Wxn26DNVafwt1yrkzhGj3w0/FCWsFY35Mjc=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Threading.Tasks.Extensions.dll" size="25984">
+      <assemblyIdentity name="System.Threading.Tasks.Extensions" version="4.2.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>T4H/0NxyBNt1r8NepCkXabB8RAWS8oiUJg7qdmJqI8Y=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.ValueTuple.dll" size="25232">
       <assemblyIdentity name="System.ValueTuple" version="4.0.3.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -1915,13 +2035,37 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="BeMusic.exe.config" size="189">
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TagLibSharp.dll" size="492032">
+      <assemblyIdentity name="TagLibSharp" version="2.2.0.0" publicKeyToken="DB62EBA44689B5B0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>OoQuhAaHNPPq9XigwIdbFQWMGUsvIFR576hnOIvFwW4=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="YoutubeExplode.dll" size="218624">
+      <assemblyIdentity name="YoutubeExplode" version="6.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>vi5uCGF8inXCv9otHbLSHwgR5CFl9XdQLThlgaTBWMs=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="BeMusic.exe.config" size="1888">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>R+Wg8QGvQVHX8T0ta/qbhH1bXkqY0fRnS3wBV3J0bN8=</dsig:DigestValue>
+      <dsig:DigestValue>St5aNqwsMZp70/pFUp6aCxXSTYTi4qWrbXFb2uJ91kQ=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\icons8_audio_file.ico" size="16958">
@@ -1944,4 +2088,4 @@
   </file>
   <fileAssociation extension=".mp3" description="Mp3 file that can BeMusic play." progid="02" defaultIcon="Images\icons8_audio_file.ico" xmlns="urn:schemas-microsoft-com:clickonce.v1" />
   <fileAssociation extension=".wav" description="Wave file that can BeMusic play." progid="01" defaultIcon="Images\icons8_audio_file.ico" xmlns="urn:schemas-microsoft-com:clickonce.v1" />
-<publisherIdentity name="CN=SANTŮV-PC\Santa" issuerKeyHash="b810e87e3241d28d290723fd7c2a68a38a87b548" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>zYgbbj/TUcuvxi6G/kkVOQRFvq8PfOki4++WaIR9Ml4=</DigestValue></Reference></SignedInfo><SignatureValue>IsHwmq91y8nXqwAQ+ESwORPW5JaCagOrU1Fn4GMinqTPwhZ05tBM4ttDdwptMzG2jJE+ol1K65HTu81YQD6E7rVWv7qjh1saQDHIpHWMQtkWYF8nI6/YCDEAU7ztLtQnYB4oAKzbmUV//IQnb05GTnbzQ6N11uqcJx4sAcEm7K4=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>xo7YUtHZMyz8cT/mHD1FgynEz9Uf94xvA1N8YubRKn3yYcTu6ovAO66/APbQJsijY61J2LgQetNodt/0CMfLs6A2z+T20LfsxjzC+OUShWbLGn35BfPxyJKnOZO7rYQOw8MU2hwxGwFK7In+/vsAdROqLWLOdgLcrdvdj0ESxFU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="5e327d846896efe322e97c0fafbe4504391549fe862ec6afcb51d33f6e1b88cd" Description="" Url=""><as:assemblyIdentity name="BeMusic.exe" version="1.1.3.15" publicKeyToken="8d7d171004d92ac7" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=SANTŮV-PC\Santa</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>50JqDaD0iq5Z3qTpTndJs9c/itxB+PfmlVP/gM5vYEc=</DigestValue></Reference></SignedInfo><SignatureValue>SKzwEwiAu89MILsiY4gbnKsMbBJ0glS14wAcppccVwGugGPf0ZU+qOnUpiK4fo+7paiSuCcJ3yI+5H6P4Yo5KbdkhXiiqbr0Lit9QI+wYKZJ4rlzWOBcPVKgdoaqHRlE5O4c923VU94FFs+ndp80t1DLgkiV8ViXNzBsLwoFFto=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>xo7YUtHZMyz8cT/mHD1FgynEz9Uf94xvA1N8YubRKn3yYcTu6ovAO66/APbQJsijY61J2LgQetNodt/0CMfLs6A2z+T20LfsxjzC+OUShWbLGn35BfPxyJKnOZO7rYQOw8MU2hwxGwFK7In+/vsAdROqLWLOdgLcrdvdj0ESxFU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB1TCCAT6gAwIBAgIQOOse9XpVLYZLf0Lgd32WAzANBgkqhkiG9w0BAQsFADApMScwJQYDVQQDHh4AUwBBAE4AVAFuAFYALQBQAEMAXABTAGEAbgB0AGEwHhcNMjEwNDEyMDczMjEwWhcNMjIwNDEyMTMzMjEwWjApMScwJQYDVQQDHh4AUwBBAE4AVAFuAFYALQBQAEMAXABTAGEAbgB0AGEwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMaO2FLR2TMs/HE/5hw9RYMpxM/VH/eMbwNTfGLm0Sp98mHE7uqLwDuuvwD20CbIo2OtSdi4EHrTaHbf9AjHy7OgNs/k9tC37MY8wvjlEoVmyxp9+QXz8ciSpzmTu62EDsPDFNocMRsBSuyJ/v77AHUTqi1iznYC3K3b3Y9BEsRVAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAmGbNzN81Zwo4iZtzXZWBGF+tfRt7JcjKsEl2xLVMQ3Du36K1lQJiKXCx6MyNWL8WPU0mhN013mgCdjnqvL9msqyRg70X2Q2FrbJqQv++u/M7of82V0S7wkN9T4JN8jxroJ8Knh3tAg8srXsPQXD5copjdyjhvwUuQv0sMVNOcKk=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+<publisherIdentity name="CN=SANTŮV-PC\Santa" issuerKeyHash="b810e87e3241d28d290723fd7c2a68a38a87b548" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>sYC/CLiuJasCadFN4GG2xH55ZB2ppoUEH3h1fVEceCg=</DigestValue></Reference></SignedInfo><SignatureValue>m4VXSRVd9XQRYKRLKmKoFfwqXIfboqUud5Fe2FP7feGY6ZRoty42OhyMhb7oBRHRQeGTn4q4TIGb7Qx2Wug/cZwJLLnO1DjwWBssHc63Glb8ehm+PzrlFqdjKXcHue8U7/3p12JsBWoKV5M4r7P+dgGKwswrTwty1Qpw9ixAouU=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>xo7YUtHZMyz8cT/mHD1FgynEz9Uf94xvA1N8YubRKn3yYcTu6ovAO66/APbQJsijY61J2LgQetNodt/0CMfLs6A2z+T20LfsxjzC+OUShWbLGn35BfPxyJKnOZO7rYQOw8MU2hwxGwFK7In+/vsAdROqLWLOdgLcrdvdj0ESxFU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="28781c517d75781f0485a6a91d64797ec4b661e04dd16902ab25aeb808bf80b1" Description="" Url=""><as:assemblyIdentity name="BeMusic.exe" version="1.3.4.26" publicKeyToken="8d7d171004d92ac7" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=SANTŮV-PC\Santa</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>5QSeVXm2bjXOfGmOvUbhSpxj5qj4em/tIVrmpAIRFUg=</DigestValue></Reference></SignedInfo><SignatureValue>AXNTj8fxl64xMA5MferRW4AdJuXUFGQIRWbLxqWugFy9lc42hrcAAnrqNywy3vSICmg4P3vkd4599h8LwoSI1L5kQXhGcSFI0sa7dBa0UIYWjioAbBTjKQ9/UU0UjXCXI9N3ccvR3ke9GoziOcD5w/vIwAiH655tMrKU8lBOknE=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>xo7YUtHZMyz8cT/mHD1FgynEz9Uf94xvA1N8YubRKn3yYcTu6ovAO66/APbQJsijY61J2LgQetNodt/0CMfLs6A2z+T20LfsxjzC+OUShWbLGn35BfPxyJKnOZO7rYQOw8MU2hwxGwFK7In+/vsAdROqLWLOdgLcrdvdj0ESxFU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB1TCCAT6gAwIBAgIQOOse9XpVLYZLf0Lgd32WAzANBgkqhkiG9w0BAQsFADApMScwJQYDVQQDHh4AUwBBAE4AVAFuAFYALQBQAEMAXABTAGEAbgB0AGEwHhcNMjEwNDEyMDczMjEwWhcNMjIwNDEyMTMzMjEwWjApMScwJQYDVQQDHh4AUwBBAE4AVAFuAFYALQBQAEMAXABTAGEAbgB0AGEwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMaO2FLR2TMs/HE/5hw9RYMpxM/VH/eMbwNTfGLm0Sp98mHE7uqLwDuuvwD20CbIo2OtSdi4EHrTaHbf9AjHy7OgNs/k9tC37MY8wvjlEoVmyxp9+QXz8ciSpzmTu62EDsPDFNocMRsBSuyJ/v77AHUTqi1iznYC3K3b3Y9BEsRVAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAmGbNzN81Zwo4iZtzXZWBGF+tfRt7JcjKsEl2xLVMQ3Du36K1lQJiKXCx6MyNWL8WPU0mhN013mgCdjnqvL9msqyRg70X2Q2FrbJqQv++u/M7of82V0S7wkN9T4JN8jxroJ8Knh3tAg8srXsPQXD5copjdyjhvwUuQv0sMVNOcKk=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

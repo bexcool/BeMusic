@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "KBlqv8msHGlPmhRga6gD1E+D4RlTrWiPXp3xMmdzoqgMUF5KBXb5r9Dm8xY12z0zjVhM2SvTCxwo/TnCd3s0Fg==",
+  "dgSpecHash": "JE3LyhbVx0h9SD0mNgPmOTkn0o9wkZk+Hfo7u41yNDanKfMuYDcSzaaJ/gLSGKJBqlmLwux3wKfTgx/trDhoQg==",
   "success": true,
   "projectFilePath": "F:\\Windows Apps Projects\\BeMusic\\BeMusic.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Santa\\.nuget\\packages\\anglesharp\\0.14.0\\anglesharp.0.14.0.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\genius.net\\4.0.1\\genius.net.4.0.1.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\jil\\2.17.0\\jil.2.17.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\microsoft.owin\\4.1.1\\microsoft.owin.4.1.1.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\microsoft.owin.security\\4.1.1\\microsoft.owin.security.4.1.1.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\microsoft.owin.security.oauth\\4.1.1\\microsoft.owin.security.oauth.4.1.1.nupkg.sha512",
@@ -22,11 +24,21 @@
     "C:\\Users\\Santa\\.nuget\\packages\\newtonsoft.json\\10.0.1\\newtonsoft.json.10.0.1.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\owin\\1.0.0\\owin.1.0.0.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\sigil\\4.7.0\\sigil.4.7.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.7.1\\system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\system.runtime.windowsruntime\\4.6.0\\system.runtime.windowsruntime.4.6.0.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\system.runtime.windowsruntime.ui.xaml\\4.6.0\\system.runtime.windowsruntime.ui.xaml.4.6.0.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
     "C:\\Users\\Santa\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
-    "C:\\Users\\Santa\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
+    "C:\\Users\\Santa\\.nuget\\packages\\system.text.encoding.codepages\\4.5.0\\system.text.encoding.codepages.4.5.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.text.encodings.web\\4.7.1\\system.text.encodings.web.4.7.1.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\taglibsharp\\2.2.0\\taglibsharp.2.2.0.nupkg.sha512",
+    "C:\\Users\\Santa\\.nuget\\packages\\youtubeexplode\\6.0.0\\youtubeexplode.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }
